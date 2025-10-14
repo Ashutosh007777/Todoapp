@@ -7,13 +7,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Connect to local MongoDB
-mongoose.connect("mongodb://localhost:27017/todoDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("✅ Connected to MongoDB"))
-.catch(err => console.error("❌ MongoDB connection error:", err));
+// ✅ Connect to MongoDB Atlas (or local fallback)
+const mongoURL = process.env.MONGO_URL || "mongodb://localhost:27017/todoDB";
+
+mongoose.connect(mongoURL)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch(err => console.error("❌ MongoDB connection error:", err));
+
 
 // 🟢 Get all todos
 app.get("/todos", async (req, res) => {
@@ -31,6 +31,7 @@ app.post("/todos", async (req, res) => {
 // 🟢 Toggle done/undone
 app.put("/todos/:id", async (req, res) => {
   const todo = await Todo.findById(req.params.id);
+  if (!todo) return res.status(404).json({ message: "Todo not found" });
   todo.done = !todo.done;
   await todo.save();
   res.json(todo);
@@ -42,4 +43,6 @@ app.delete("/todos/:id", async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
-app.listen(5000, () => console.log("🚀 Server running on port 5000"));
+// ✅ Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
