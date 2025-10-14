@@ -1,18 +1,27 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const Todo = require("./models/Todo");
+const Todo = require("./models/Todo"); // Make sure this exists
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Connect to MongoDB Atlas (or local fallback)
-const mongoURL = process.env.MONGO_URL || "mongodb://localhost:27017/todoDB";
+// ✅ Connect to MongoDB Atlas (replace <password> with your DB password)
+mongoose.connect(
+  "mongodb+srv://ashutoshchatur07_db_user:u6jkSgMynsyvpu8O@cluster0.ric4fav.mongodb.net/todoDB?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+)
+.then(() => console.log("✅ Connected to MongoDB"))
+.catch(err => console.error("❌ MongoDB connection error:", err));
 
-mongoose.connect(mongoURL)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+// 🟢 Root route to prevent 404
+app.get("/", (req, res) => {
+  res.send("✅ Todo App Backend is running!");
+});
 
 // 🟢 Get all todos
 app.get("/todos", async (req, res) => {
@@ -42,6 +51,6 @@ app.delete("/todos/:id", async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
-// ✅ Start server
+// 🚀 Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
