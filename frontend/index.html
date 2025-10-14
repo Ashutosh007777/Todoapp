@@ -2,34 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Content Security Policy -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src 'self';
-          style-src 'self';
-          font-src 'self';
-          img-src 'self';
-        ">
-
   <title>Todo App</title>
-  <!-- Link only to local CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <div class="container">
-    <h1>📝 To-Do List</h1>
+    <h1>📝 Todo List</h1>
     <div class="input-box">
       <input type="text" id="todoInput" placeholder="Add new task...">
       <button onclick="addTodo()">Add</button>
     </div>
     <ul id="todoList"></ul>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>

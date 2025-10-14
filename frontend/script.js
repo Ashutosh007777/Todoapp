@@ -1,5 +1,4 @@
-// Replace with your Render backend URL
-const baseURL = "https://todoapp-o4bc.onrender.com"; // <-- use your actual Render URL
+const baseURL = "https://todoapp-o4bc.onrender.com";
 
 async function loadTodos() {
   const res = await fetch(`${baseURL}/todos`);
@@ -51,5 +50,4 @@ async function deleteTodo(id) {
   loadTodos();
 }
 
-// Initial load
 loadTodos();
