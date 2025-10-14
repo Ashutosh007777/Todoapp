@@ -1,44 +1,57 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const path = require("path");
-const Todo = require("./models/Todo");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import cors from "cors";
 
+dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 5000;
+
+// For resolving __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ===== Middleware =====
 app.use(cors());
 app.use(express.json());
 
-// ✅ Serve static frontend files (index.html, style.css, script.js)
-app.use(express.static(path.join(__dirname, "public")));
-
-// ✅ Connect to MongoDB Atlas
+// ===== MongoDB Connection =====
 mongoose
-  .connect("mongodb+srv://ashutoshchatur07_db_user:u6jkSgMynsyvpu8O@cluster0.ric4fav.mongodb.net/todoDB?retryWrites=true&w=majority", {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("✅ Connected to MongoDB"))
+  .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// ✅ Default homepage
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// ===== Schema & Model =====
+const todoSchema = new mongoose.Schema({
+  text: String,
+  done: { type: Boolean, default: false },
 });
 
-// ✅ Get all todos
+const Todo = mongoose.model("Todo", todoSchema);
+
+// ===== API Routes =====
+
+// Get all todos
 app.get("/todos", async (req, res) => {
   const todos = await Todo.find();
   res.json(todos);
 });
 
-// ✅ Add new todo
+// Add new todo
 app.post("/todos", async (req, res) => {
-  const todo = new Todo({ text: req.body.text });
+  const todo = new Todo({
+    text: req.body.text,
+  });
   await todo.save();
   res.json(todo);
 });
 
-// ✅ Toggle done/undone
+// Toggle done
 app.put("/todos/:id", async (req, res) => {
   const todo = await Todo.findById(req.params.id);
   todo.done = !todo.done;
@@ -46,16 +59,18 @@ app.put("/todos/:id", async (req, res) => {
   res.json(todo);
 });
 
-// ✅ Delete todo
+// Delete todo
 app.delete("/todos/:id", async (req, res) => {
   await Todo.findByIdAndDelete(req.params.id);
-  res.json({ message: "Deleted" });
+  res.json({ message: "Deleted successfully" });
 });
 
-// ✅ Catch-all route for SPA
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// ===== Serve Frontend (Fixed for Express v5) =====
+app.use(express.static(path.join(__dirname, "../frontend")));
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend", "index.html"));
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// ===== Start Server =====
+app.listen(PORT, () => console.log(`✅ Todo App Backend is running on port ${PORT}`));
