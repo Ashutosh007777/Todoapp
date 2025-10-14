@@ -1,61 +1,42 @@
+/* General styles using system fonts */
 body {
-  background: #f4f7fa;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f4f4;
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 .container {
-  background: white;
-  padding: 25px;
+  background: #fff;
+  padding: 20px 30px;
   border-radius: 10px;
-  width: 350px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-h1 {
-  text-align: center;
-  color: #333;
-}
-
-.input-box {
-  display: flex;
-  margin-bottom: 20px;
-}
-
 input {
-  flex: 1;
   padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 5px 0 0 5px;
+  width: 200px;
+  margin-right: 10px;
 }
 
 button {
-  background: #007bff;
-  color: white;
-  border: none;
   padding: 10px 15px;
-  border-radius: 0 5px 5px 0;
   cursor: pointer;
-}
-
-button:hover {
-  background: #0056b3;
 }
 
 ul {
   list-style: none;
   padding: 0;
+  margin-top: 20px;
 }
 
 li {
-  background: #f8f9fa;
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 5px;
   display: flex;
   justify-content: space-between;
+  padding: 5px 0;
 }
 
 li.done {
