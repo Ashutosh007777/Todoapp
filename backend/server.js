@@ -1,13 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
-dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// ✅ Use Render’s Environment Variable directly
+const MONGO_URI = process.env.MONGO_URI || "your-local-mongodb-url";
 
 // For resolving __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +20,7 @@ app.use(express.json());
 
 // ===== MongoDB Connection =====
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -31,27 +32,20 @@ const todoSchema = new mongoose.Schema({
   text: String,
   done: { type: Boolean, default: false },
 });
-
 const Todo = mongoose.model("Todo", todoSchema);
 
 // ===== API Routes =====
-
-// Get all todos
 app.get("/todos", async (req, res) => {
   const todos = await Todo.find();
   res.json(todos);
 });
 
-// Add new todo
 app.post("/todos", async (req, res) => {
-  const todo = new Todo({
-    text: req.body.text,
-  });
+  const todo = new Todo({ text: req.body.text });
   await todo.save();
   res.json(todo);
 });
 
-// Toggle done
 app.put("/todos/:id", async (req, res) => {
   const todo = await Todo.findById(req.params.id);
   todo.done = !todo.done;
@@ -59,13 +53,12 @@ app.put("/todos/:id", async (req, res) => {
   res.json(todo);
 });
 
-// Delete todo
 app.delete("/todos/:id", async (req, res) => {
   await Todo.findByIdAndDelete(req.params.id);
   res.json({ message: "Deleted successfully" });
 });
 
-// ===== Serve Frontend (Fixed for Express v5) =====
+// ===== Serve Frontend =====
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 app.get("/*", (req, res) => {
