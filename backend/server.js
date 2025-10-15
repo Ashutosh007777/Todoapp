@@ -65,8 +65,8 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 // Handle SPA routes
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend", "index.html"));
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
 // ------------------ Start Server ------------------
