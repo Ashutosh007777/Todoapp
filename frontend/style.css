@@ -1,52 +1,129 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  background: linear-gradient(135deg, #5b86e5, #36d1dc);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .container {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  width: 350px;
+  background: #fff;
+  width: 400px;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
 }
 
-.input-box {
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.input-section {
   display: flex;
-  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
 }
 
-input[type="text"] {
+.input-section input {
   flex: 1;
-  padding: 10px;
-  font-size: 16px;
+  padding: 10px 15px;
+  border: 2px solid #5b86e5;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+  transition: 0.3s;
 }
 
-button {
-  padding: 10px 15px;
-  margin-left: 5px;
+.input-section input:focus {
+  border-color: #36d1dc;
+  box-shadow: 0 0 5px rgba(54, 209, 220, 0.4);
+}
+
+.input-section button {
+  background: #5b86e5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
   cursor: pointer;
+  transition: background 0.3s;
+}
+
+.input-section button:hover {
+  background: #4a6fd0;
 }
 
 ul {
   list-style: none;
-  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
-li {
+ul li {
+  background: #f8f9fa;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-  padding: 8px;
-  background: #f0f0f0;
-  border-radius: 5px;
+  align-items: center;
+  transition: all 0.3s;
 }
 
-li.done {
-  text-decoration: line-through;
-  color: gray;
+ul li:hover {
+  transform: scale(1.02);
+}
+
+ul li span {
+  font-size: 1rem;
+  color: #333;
+}
+
+ul li button {
+  margin-left: 10px;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+ul li button:first-child {
+  background-color: #36d1dc;
+  color: #fff;
+}
+
+ul li button:last-child {
+  background-color: #ff5c5c;
+  color: #fff;
+}
+
+ul li button:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 450px) {
+  .container {
+    width: 90%;
+    padding: 1.5rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
 }
